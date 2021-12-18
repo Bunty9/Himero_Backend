@@ -15,28 +15,27 @@ module.exports = function (app) {
 
     app.get("/api/all", controller.allAccess);
 
-    app.get("/api/user", [authJwt.verifyToken], controller.userBoard);
+    app.post("/api/user", [authJwt.verifyToken], function (req, res) {
+        const userid = req.body.userid;
+        User.findOne(ObjectId(userid)).exec((err, user) => {
+            if (err) {
+                res.status(500).send({ message: err });
+                return;
+            }
+            if (!user) {
+                return res.status(404).send({ message: "User Not found." });
+            }
+            return res.status(200).json(user.house);
+            // res.send("Admin data");
+            // houseid
+            //find house and structure housedata
+            //send house data
+        });
+    });
 
     app.post(
         "/api/admin",
         [authJwt.verifyToken, authJwt.isAdmin],
-        function (req, res) {
-            const userid = req.body.userid;
-
-            User.findOne(ObjectId(userid)).exec((err, user) => {
-                if (err) {
-                    res.status(500).send({ message: err });
-                    return;
-                }
-                if (!user) {
-                    return res.status(404).send({ message: "User Not found." });
-                }
-                return res.status(200).send(user.username);
-                // res.send("Admin data");
-                // houseid
-                //find house and structure housedata
-                //send house data
-            });
-        }
+        controller.adminBoard
     );
 };

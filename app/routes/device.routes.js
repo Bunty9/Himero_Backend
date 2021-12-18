@@ -7,7 +7,7 @@ const User = db.user;
 const House = db.house;
 const { checkDuplicateHouse } = require("../middlewares");
 
-module.exports = function (app) {
+module.exports = function ({ app, io }) {
     app.use(function (req, res, next) {
         res.header(
             "Access-Control-Allow-Headers",
@@ -117,13 +117,53 @@ module.exports = function (app) {
             }).then(res.send("New House added").status(200));
         });
     });
-    
+
     app.post("/api/newroom", function (req, res) {
         console.log(req.body);
-        res.status(200).send("data received");
+        User.updateOne(
+            { _id: req.body.userid, "house.housename": req.body.homeName },
+            { $addToSet: { room: { roomname: req.body.roomName } } }
+        ).then(res.send("New Room added").status(200));
+
+        // User.findById().exec((err, house) => {
+        //     if (err) {
+        //         res.send(err).status(500);
+        //         return;
+        //     }
+        //     if (!house) {
+        //         return res.send("house Not found.").status(404);
+        //     }
+        //     house
+        //         .updateOne({
+        //             $addToSet: { room: { roomname: req.body.roomName } },
+        //         })
+        //         .then(res.send("New Room added").status(200));
+
+        //     // user.updateOne(
+        //     //     { housename: req.body.homeName },
+        //     //     { $push: { room: { roomname: req.body.roomName } } }
+        //     // ).then(res.send("New Room added").status(200));
+
+        //     // user.updateOne(
+        //     //     { housename: req.body.homeName },
+        //     //     {
+        //     //         $push: {
+        //     //             "house.$.room": {
+        //     //                 roomname: req.body.roomName,
+        //     //             },
+        //     //         },
+        //     //     }
+        //     // ).then(res.send("New Room added").status(200));
+        // });
     });
     app.post("/api/newdevice", function (req, res) {
         console.log(req.body);
         res.status(200).send("data received");
+    });
+
+    app.post("/api/turnon", function (req, res) {
+        io.emit("test", req.body);
+        console.log(req.body);
+        res.status(200).send("turn on emitted");
     });
 };
