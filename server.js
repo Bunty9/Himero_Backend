@@ -41,22 +41,18 @@ app.get("/", function (req, res, next) {
 require("./app/routes/auth.routes")(app);
 require("./app/routes/user.routes")(app);
 require("./app/routes/device.routes")({ app, io });
-// const jwtMiddleware = (socket, next) => {                //jwt auth token for socket connection
-//     const {token} = socket.handshake.query;
-//     // verify token
-//   };
-// io.use(jwtMiddleware);
+
 io.on("connection", (socket) => {
     console.log(
         `connect auth=${JSON.stringify(socket.handshake.auth)} sid=${socket.id}`
     );
-    // if (socket.handshake.auth.token != authtoken) {
-    //     if (socket.disconnect()) {
-    //         console.log(
-    //             `disconnected ${socket.id} for invalid token ${socket.handshake.auth.token}`
-    //         );
-    //     }
-    // }
+    if (socket.handshake.auth.token != authtoken) {
+        if (socket.disconnect()) {
+            console.log(
+                `disconnected ${socket.id} for invalid token ${socket.handshake.auth.token}`
+            );
+        }
+    }
     socket.on("action", (msg) => {
         console.log("action", msg);
     });
