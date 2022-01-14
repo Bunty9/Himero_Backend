@@ -14,8 +14,6 @@ module.exports = function (app) {
         next();
     });
 
-    app.get("/api/all", controller.allAccess);
-
     app.post(
         "/api/user",
         [authJwt.verifyToken],
