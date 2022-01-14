@@ -14,6 +14,8 @@ module.exports = function (app) {
         next();
     });
 
+    app.get("/api/all", controller.allAccess);
+
     app.post(
         "/api/user",
         [authJwt.verifyToken],
@@ -26,7 +28,6 @@ module.exports = function (app) {
                     .in(user.house[i])
                     .exec();
                 const roomIDS = house.map((house) => house.room).flat();
-                // data.push(house);
                 if (house.length > 0) {
                     data.push(house);
                 }
