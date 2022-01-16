@@ -1,7 +1,7 @@
 const express = require("express");
 const app = express();
 const http = require("http").Server(app);
-const io = require("socket.io")(http);
+// const io = require("socket.io")(http);
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const dbConfig = require("./app/config/db.config");
@@ -40,26 +40,26 @@ app.get("/", function (req, res, next) {
 // routes
 require("./app/routes/auth.routes")(app);
 require("./app/routes/user.routes")(app);
-require("./app/routes/device.routes")({ app, io });
+require("./app/routes/device.routes")(app);
 
-io.on("connection", (socket) => {
-    console.log(
-        `connect auth=${JSON.stringify(socket.handshake.auth)} sid=${socket.id}`
-    );
-    if (socket.handshake.auth.token != authtoken) {
-        if (socket.disconnect()) {
-            console.log(
-                `disconnected ${socket.id} for invalid token ${socket.handshake.auth.token}`
-            );
-        }
-    }
-    socket.on("action", (msg) => {
-        console.log("action", msg);
-    });
-    socket.on("disconnect", () => {
-        console.log(`disconnect ${socket.id}`);
-    });
-});
+// io.on("connection", (socket) => {
+//     console.log(
+//         `connect auth=${JSON.stringify(socket.handshake.auth)} sid=${socket.id}`
+//     );
+//     if (socket.handshake.auth.token != authtoken) {
+//         if (socket.disconnect()) {
+//             console.log(
+//                 `disconnected ${socket.id} for invalid token ${socket.handshake.auth.token}`
+//             );
+//         }
+//     }
+//     socket.on("action", (msg) => {
+//         console.log("action", msg);
+//     });
+//     socket.on("disconnect", () => {
+//         console.log(`disconnect ${socket.id}`);
+//     });
+// });
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;
 // server.listen(PORT, () => console.log(`Server is running on port ${PORT}.`));

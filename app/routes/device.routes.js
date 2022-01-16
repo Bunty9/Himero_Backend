@@ -4,7 +4,7 @@ const User = db.user;
 const House = db.house;
 const Room = db.room;
 
-module.exports = function ({ app, io }) {
+module.exports = function (app) {
     // app.use(function (req, res, next) {
     //     res.header(
     //         "Access-Control-Allow-Headers",
@@ -98,7 +98,7 @@ module.exports = function ({ app, io }) {
     });
 
     app.post("/api/turnon", function (req, res) {
-        io.emit("test", req.body);
+        // io.emit("test", req.body);
         console.log(req.body);
         res.status(200).send("turn on emitted");
     });

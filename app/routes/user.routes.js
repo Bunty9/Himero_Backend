@@ -59,9 +59,5 @@ module.exports = function (app) {
         }
     );
 
-    app.post(
-        "/api/admin",
-        [authJwt.verifyToken, authJwt.isAdmin],
-        controller.adminBoard
-    );
+    app.post("/api/admin", [authJwt.verifyToken], controller.adminBoard);
 };
