@@ -3,7 +3,7 @@ const controller = require("../controllers/user.controller");
 const db = require("../models");
 const House = require("../models/house.model");
 const User = db.user;
-const Room = db.room;
+const Device = db.device;
 
 module.exports = function (app) {
     app.use(function (req, res, next) {
@@ -27,33 +27,23 @@ module.exports = function (app) {
                     .where("_id")
                     .in(user.house[i])
                     .exec();
-                const roomIDS = house.map((house) => house.room).flat();
+                const deviceIDS = house.map((house) => house.device).flat();
                 if (house.length > 0) {
                     data.push(house);
                 }
-                var rooms = [];
-                for (j = 0; j < roomIDS.length; j++) {
-                    const room = await Room.find()
+                var devices = [];
+                for (j = 0; j < deviceIDS.length; j++) {
+                    const device = await Device.find()
                         .where("_id")
-                        .in(roomIDS[j])
+                        .in(deviceIDS[j])
                         .exec();
-                    rooms.push(room[0]);
-                    // if (room.length > 0) {
-                    //     const devices = room.map((room) => room.device).flat();
-                    //     if (devices.length > 0) {
-                    //         // console.log(devices);
-                    //     }
-                    // }
+                    devices.push(device[0]);
 
-                    // if (parseInt(room.length) > 0) {
-                    //     data.house.push(room);
-                    // }
-                    console.log(rooms);
+                    console.log(devices);
                 }
-                data[i].push(rooms);
+                data[i].push(devices);
             }
-            // console.log(data);
-            // const room = await Room.find().where("_id").in(house.room).exec();
+            console.log(data);
             res.send(data).status(200);
             next();
         }
