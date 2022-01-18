@@ -1,8 +1,13 @@
+const db = require("../models");
+const House = db.house;
+const User = db.user;
+const Device = db.device;
+
 exports.allAccess = async (req, res) => {
     await res.status(200).send("All Public Content.");
 };
 
-exports.userBoard = async function (req, res, next) {
+exports.userAccess = async (req, res) => {
     var data = [];
     const user = await User.findById(req.body.userid).exec();
     for (i = 0; i < user.house.length; i++) {
@@ -25,7 +30,6 @@ exports.userBoard = async function (req, res, next) {
     }
     console.log(data);
     res.send(data).status(200);
-    next();
 };
 
 exports.adminBoard = async (req, res) => {
