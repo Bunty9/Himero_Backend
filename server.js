@@ -14,7 +14,10 @@ app.use(cors());
 app.use(bodyParser.json());
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }));
-
+app.use(function (req, res, next) {
+    res.setTimeout(20000);
+    next();
+});
 const db = require("./app/models");
 
 db.mongoose
