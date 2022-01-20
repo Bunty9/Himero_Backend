@@ -1,8 +1,7 @@
-//handle crud home,room, device routes and update to database
 const db = require("../models");
 const User = db.user;
 const House = db.house;
-const Device = db.device;
+const Room = db.room;
 
 module.exports = function ({ app, io }) {
     // app.use(function (req, res, next) {
@@ -41,49 +40,60 @@ module.exports = function ({ app, io }) {
         });
     });
 
-    // app.post("/api/newroom", function (req, res) {
-    //     console.log(req.body);
-    //     const room = new Room({
-    //         roomname: req.body.roomName,
-    //     });
-    //     House.updateOne(
-    //         { housename: req.body.homeName },
-    //         { $addToSet: { room: { _id: room._id } } },
-    //         function (err) {
-    //             if (err) {
-    //                 console.log(err);
-    //                 res.status(500).send({ message: err });
-    //                 return;
-    //             }
-    //         }
-    //     );
+    app.post("/api/newroom", function (req, res) {
+        console.log(req.body);
+        const room = new Room({
+            roomname: req.body.roomName,
+        });
+        House.updateOne(
+            { housename: req.body.homeName },
+            { $addToSet: { room: { _id: room._id } } },
+            function (err) {
+                if (err) {
+                    console.log(err);
+                    res.status(500).send({ message: err });
+                    return;
+                }
+            }
+        );
 
-    //     room.save((err) => {
-    //         if (err) {
-    //             res.status(500).send({ message: err });
-    //             return;
-    //         } else {
-    //             res.send("Room Successfully created").status(200);
-    //         }
-    //     });
-    // });
+        room.save((err) => {
+            if (err) {
+                res.status(500).send({ message: err });
+                return;
+            } else {
+                res.send("Room Successfully created").status(200);
+            }
+        });
+    });
 
     app.post("/api/newdevice", async function (req, res) {
         console.log(req.body);
         const user = await User.findById(req.body.userid).exec();
-        const device = new Device({
-            devicename: req.body.deviceName,
-            deviceid: req.body.deviceId,
-        });
-        await House.updateOne(
-            { housename: req.body.homeName },
-            { $addToSet: { device: { _id: device._id } } }
-        )
+        // console.log(user.house);
+        const house = await House.find({ housename: req.body.homeName })
             .where("_id")
             .in(user.house)
             .exec();
+        // console.log(house);
+        // console.log(house[0].room);
+        await Room.updateOne(
+            { roomname: req.body.roomName },
+            {
+                $addToSet: {
+                    device: {
+                        deviceid: req.body.deviceId,
+                        devicename: req.body.deviceName,
+                    },
+                },
+            }
+        )
+            .where("_id")
+            .in(house[0].room)
+            .exec();
+        // console.log(room);
 
-        res.status(200).send("device added");
+        res.status(200).send("adding device");
     });
 
     app.post("/api/turnon", function (req, res) {

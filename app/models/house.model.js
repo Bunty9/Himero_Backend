@@ -5,7 +5,7 @@ const House = mongoose.model(
     new mongoose.Schema({
         userid: mongoose.Schema.Types.ObjectId,
         housename: String,
-        device: [{ type: mongoose.Schema.ObjectId }],
+        room: [{ type: mongoose.Schema.ObjectId }],
     })
 );
 

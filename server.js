@@ -15,7 +15,11 @@ app.use(bodyParser.json());
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(function (req, res, next) {
-    res.setTimeout(20000);
+    res.setTimeout(120000, function () {
+        console.log("Request has timed out.");
+        res.send(408);
+    });
+
     next();
 });
 const db = require("./app/models");
@@ -67,3 +71,4 @@ const PORT = process.env.PORT || 8080;
 http.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}.`);
 });
+http.setTimeout(500000);
