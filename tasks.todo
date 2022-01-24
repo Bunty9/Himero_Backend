@@ -1,0 +1,23 @@
+☐ create new room database handler
+☐ create new device database handler
+☐ send home and device data on user request
+✔ create global insstance of socketio server @done (12/17/2021, 11:43:25 PM)
+✔ emit events from any module in the project....?? @done (12/17/2021, 11:43:28 PM)
+
+
+{
+    {
+        housename
+        room:[
+            {
+                roomname
+                device:[
+                    {
+                        devicename
+                        deviceid
+                    }
+                ]
+            }
+        ]
+    }
+}
