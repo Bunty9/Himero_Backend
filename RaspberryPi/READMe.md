@@ -56,6 +56,6 @@ python esp_response.py
 
 ## Media
 
-![Socket_client](./screenshots/socket_client.PNG)
-![Esp_Response](./screenshots/esp_resp.PNG)
-![Working Model](./screenshots/model.mp4)
+![Socket_client](../screenshots/socket_client.PNG)
+![Esp_Response](../screenshots/esp_resp.PNG)
+![Working Model](../screenshots/model.mp4)

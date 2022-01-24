@@ -87,8 +87,3 @@ Send Button Toggle
 ## Media
 
 ![Terminal SS](./screenshots/bkend.PNG)
-
-![ApiCatalog_SampleNodeApi_SwaggerDoc](./screenshots/ApiCatalog_SampleNodeApi_SwaggerDoc.png)
-
-**Discovery Service Dashboard**
-![DiscoveryService_Dashboard](./screenshots/DiscoveryService_Dashboard.png)
